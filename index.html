@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariele Couto - Neuropsicopedagoga | Anamnese</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data: https:;">
+
+    <style>
+        /* === CSS ATUALIZADO: Design Moderno, Responsivo e com Dark Mode === */
+        :root {
+            --ari-accent: #6B46C1; 
+            --user-accent: #805AD5; 
+            --app-bg: #EDF2F7; 
+            --ari-bubble-bg: #FFFFFF;
+            --primary-text: #1A202C; 
+            --secondary-text: #4A5568;
+            --success: #38A169; 
+            --input-bg: #FFFFFF;
+            --input-border: #E2E8F0;
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-bubble: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+        /* 🌙 DETECÇÃO AUTOMÁTICA DE MODO ESCURO */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --app-bg: #1A202C; 
+                --ari-bubble-bg: #2D3748; 
+                --primary-text: #F7FAFC; 
+                --secondary-text: #A0AEC0;
+                --input-bg: #2D3748;
+                --input-border: #4A5568;
+                --success: #2F855A;
+            }
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--app-bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; color: var(--primary-text); transition: background-color 0.3s, color 0.3s; }
+        
+        header { position: sticky; top: 0; z-index: 100; background-color: var(--app-bg); padding: 25px 20px; text-align: center; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; align-items: center; border-bottom: none; }
+        
+        .logo-ari { height: 85px; max-width: 250px; object-fit: contain; margin-bottom: 15px; transition: transform 0.3s ease; }
+        .logo-ari:hover { transform: scale(1.03); }
+
+        header h1 { margin: 5px 0 0; font-size: 1.5rem; font-weight: 800; color: var(--ari-accent); letter-spacing: -0.5px; }
+        header p { margin: 0; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #718096; }
+
+        #chat-container { flex: 1; overflow-y: auto; padding: 30px 10vw; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; background-color: var(--app-bg); }
+        
+        .bubble { max-width: 75%; padding: 18px 24px; border-radius: 20px; line-height: 1.6; font-size: 1rem; animation: slideUp 0.4s ease; position: relative; box-shadow: var(--shadow-bubble); }
+        .ari { background-color: var(--ari-bubble-bg); color: var(--primary-text); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .ari strong { color: var(--ari-accent); }
+        .user { background-color: var(--user-accent); color: white; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 2px 5px rgba(107, 70, 193, 0.3); }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; width: 100%; max-width: 600px; align-self: flex-start; }
+        .btn-opt { background: var(--ari-bubble-bg); border: 2px solid var(--ari-accent); color: var(--primary-text); padding: 12px 20px; border-radius: 30px; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s ease; text-align: center; }
+        .btn-opt:hover { background-color: var(--ari-accent); color: white; transform: translateY(-1px); }
+        .btn-opt.selected { background-color: var(--ari-accent); color: white; border-color: var(--ari-accent); }
+        .btn-confirm { grid-column: 1 / -1; background-color: var(--success); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer; margin-top: 5px; transition: background 0.2s ease; font-size: 1rem; }
+        .btn-confirm:hover { background-color: #2F855A; }
+
+        .input-area { background-color: var(--app-bg); padding: 25px 10vw; border-top: none; display: flex; gap: 12px; align-items: center; box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05); }
+        input { flex: 1; padding: 15px 20px; border: 2px solid var(--input-border); border-radius: 30px; outline: none; font-size: 1.1rem; transition: 0.2s; background-color: var(--input-bg); color: var(--primary-text); }
+        input:focus { border-color: var(--ari-accent); box-shadow: 0 0 0 3px rgba(128, 90, 213, 0.2); }
+        .send-btn { background: var(--ari-accent); color: white; border: none; padding: 0 30px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem; height: 50px; }
+        .send-btn:hover { background-color: var(--user-accent); }
+
+        #success-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px; background-color: var(--app-bg); animation: slideUp 0.5s ease; }
+        .icon-check { font-size: 6rem; color: var(--success); margin-bottom: 20px; text-shadow: 0 4px 10px rgba(72, 187, 120, 0.4); }
+        #success-screen h2 { color: var(--primary-text); margin: 0 0 15px 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        #success-screen p { color: var(--secondary-text); margin-bottom: 35px; line-height: 1.8; font-size: 1.1rem; max-width: 400px; }
+        .btn-whatsapp { background: #25D366; color: white; border: none; padding: 18px 35px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 320px; justify-content: center; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3); transition: 0.3s; }
+        .btn-whatsapp:hover { background: #1EBE5D; transform: translateY(-2px); }
+        .btn-redo { background: none; border: none; color: #A0AEC0; text-decoration: underline; cursor: pointer; font-size: 1rem; }
+
+        .typing { font-size: 0.8rem; color: #A0AEC0; margin-left: 10px; display: none; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
+
+        /* 📱 RESPONSIVIDADE PARA CELULARES GARANTIDA AQUI */
+        @media (max-width: 768px) { header h1 { font-size: 1.2rem; } .logo-ari { height: 70px; } #chat-container, .input-area { padding-left: 5vw; padding-right: 5vw; } .bubble { max-width: 90%; } .options-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logoari.png" alt="Ariele Couto Neuropsicopedagogia" class="logo-ari" onerror="this.style.display='none';">
+    <h1>Ariele Couto</h1>
+    <p>NEUROPSICOPEDAGOGA - CBO: 2394-35</p>
+</header>
+
+<div id="chat-container">
+    <div id="typing" class="typing">Ari está digitando...</div>
+</div>
+
+<div class="input-area" id="input-section">
+    <input type="text" id="user-input" placeholder="Escreva aqui..." autocomplete="off">
+    <button class="send-btn" id="btn-send">Enviar</button>
+</div>
+
+<div id="success-screen" class="hidden">
+    <div class="icon-check">✅</div>
+    <h2>Anamnese Concluída!</h2>
+    <p>Muito obrigada por partilhar a história do seu filho. Recebi as informações com segurança e analisarei cada detalhe com muito carinho.</p>
+    <button class="btn-whatsapp" id="btn-whatsapp">💬 Falar com a Ariele Couto no WhatsApp</button>
+    <button class="btn-redo" id="btn-redo">↻ Refazer formulário</button>
+</div>
+
+<script>
+    (function() {
+        'use strict';
+        const CONFIG = { FORMSPREE_URL: "https://formspree.io/f/mykozndn", WHATSAPP_NUMBER: "5551990161624" };
+        const container = document.getElementById('chat-container');
+        const input = document.getElementById('user-input');
+        const typing = document.getElementById('typing');
+        const inputSection = document.getElementById('input-section');
+        const successScreen = document.getElementById('success-screen');
+        let responses = {};
+        
+        // ⚠️ CORRIGIDO: Retornado para 0 para os pacientes reais iniciarem do começo!
+        let currentStep = 0; 
+        
+        let tempMultiSelections = [];
+        const flow = [ { key: 'lgpd', m: "Você autoriza o tratamento destes dados para fins de triagem clínica, conforme LGPD?", opts: ["Sim, autorizo", "Não autorizo"] }, { key: 'email', m: "Qual o seu melhor e-mail? (Para segurança caso precise refazer o teste)" }, { key: 'nome', m: "1. IDENTIFICAÇÃO: Qual o nome da criança?" }, { key: 'idade', m: "Qual a idade da criança?" }, { key: 'serie', m: "Qual a Série/Ano escolar?" }, { key: 'resp', m: "Qual o nome do(s) responsável(is)?" }, { key: 'tel', m: "Qual o telefone de contato (WhatsApp)?" }, { key: 'q_princ', m: "2. QUEIXA PRINCIPAL: Quais dificuldades motivaram a busca por atendimento? (Selecione todas que se aplicam)", opts: ["Demora iniciar atividades", "Demora finalizar tarefas/provas", "Não conclui tarefas", "Dificuldade de atenção", "Dificuldade de aprendizagem", "Ansiedade em tarefas/provas", "Desmotivação escolar", "Outro"], multi: true }, { key: 'q_det', m: "Descreva com mais detalhes a queixa principal:" }, { key: 'gest', m: "3. HISTÓRICO: Como foram a gestação e o parto?", opts: ["Sem intercorrências", "Prematuridade", "Complicações", "Outro"] }, { key: 'atraso', m: "Houve atraso no desenvolvimento? (Selecione se aplicável)", opts: ["Não", "Fala", "Andar", "Interação social"], multi: true }, { key: 'fala_det', m: "Descreva brevemente o desenvolvimento da fala da criança:" }, { key: 'apr_dif', m: "4. APRENDIZAGEM: Apresenta dificuldades em quais áreas? (Selecione todas que se aplicam)", opts: ["Leitura", "Escrita", "Interpretação", "Matemática", "Organização", "Nenhuma"], multi: true }, { key: 'troca_let', m: "Troca letras ou sons?", opts: ["Sim", "Não", "Às vezes"] }, { key: 'comp', m: "5. ATENÇÃO E COMPORTAMENTO: Apresenta algum destes sinais? (Selecione todos que se aplicam)", opts: ["Distração frequente", "Dificuldade de concentração", "Inquietação", "Procrastinação", "Evita tarefas", "Nenhum"], multi: true }, { key: 'atencao', m: "Mantém a atenção até o final da tarefa?", opts: ["Sim", "Não", "Com ajuda"] }, { key: 'obs_aten', m: "Observações sobre atenção e comportamento:" }, { key: 'leit', m: "Sobre a leitura, como ela é?", opts: ["Fluente", "Lenta", "Silabada", "Dificuldade de compreensão", "Ainda não lê"] }, { key: 'esc', m: "Consegue escrever com autonomia?", opts: ["Sim", "Não", "Parcialmente"] }, { key: 'ini_tar', m: "Como inicia as tarefas?", opts: ["Sozinha", "Com ajuda", "Resiste"] }, { key: 'emoc', m: "6. ASPECTOS EMOCIONAIS: Demonstra algum destes sinais? (Selecione todos que se aplicam)", opts: ["Ansiedade", "Medo de errar", "Baixa autoestima", "Frustração fácil", "Tristeza frequente", "Nenhum"], multi: true }, { key: 'diag', m: "Já possui diagnóstico? Se sim, qual? (Se não, responda 'Não')" }, { key: 'frust', m: "Como reage à frustração?" }, { key: 'rotina', m: "7. ROTINA FAMILIAR: Em casa, ela...", opts: ["Cumpre combinados", "Precisa de lembretes", "Resiste às regras"] }, { key: 'tar_dom', m: "Ajuda em tarefas domésticas?", opts: ["Sim", "Não", "Às vezes"] }, { key: 'quais_tar', m: "Se sim, quais tarefas ajuda a realizar?" }, { key: 'comp_casa', m: "Descreva o comportamento geral em casa:" }, { key: 'temas_auto', m: "8. TAREFAS ESCOLARES: Realiza temas com autonomia?", opts: ["Sim", "Não", "Parcialmente"] }, { key: 'ajuda_temas', m: "Precisa de ajuda para os temas?", opts: ["Sempre", "Às vezes", "Raramente"] }, { key: 'demora_fin', m: "Demora para finalizar os temas?", opts: ["Sim", "Não"] }, { key: 'momento_tar', m: "Como é esse momento da tarefa em casa?" }, { key: 'sono', m: "9. SONO: Qual a qualidade do sono?", opts: ["Boa", "Regular", "Ruim"] }, { key: 'hrs_sono', m: "Quantas horas de sono por noite em média?" }, { key: 'dif_sono', m: "Apresenta dificuldade para: (Selecione aplicáveis)", opts: ["Dormir", "Acordar", "Acorda durante a noite", "Nenhuma"], multi: true }, { key: 'telas', m: "10. TELAS: Tempo diário de telas:", opts: ["Menos de 1h", "1 a 2h", "2 a 4h", "Mais de 4h"] }, { key: 'int_rot', m: "O uso de telas interfere na rotina?", opts: ["Sim", "Não"] }, { key: 'obs_telas', m: "Observações sobre o uso de telas:" }, { key: 'soc_cri', m: "11. SOCIALIZAÇÃO: Relacionamento com outras crianças:", opts: ["Bom", "Dificuldade", "Prefere ficar sozinha"] }, { key: 'amigos', m: "Tem amigos?", opts: ["Sim", "Não"] }, { key: 'conflitos', m: "Já apresentou conflitos ou isolamento?", opts: ["Sim", "Não"] }, { key: 'desc_conf', m: "Se sim, descreva os conflitos ou isolamento:" }, { key: 'esc_amb', m: "12. ESCOLA: Como é o ambiente escolar para ela?", opts: ["Acolhedor", "Estressante", "Indiferente"] }, { key: 'apoio_esc', m: "A escola oferece apoio?", opts: ["Sim", "Não", "Parcial"] }, { key: 'adapt', m: "Já foram feitas adaptações escolares?", opts: ["Sim", "Não"] }, { key: 'quais_adapt', m: "Se sim, quais adaptações?" }, { key: 'acomp', m: "13. SAÚDE: Já realizou acompanhamento com: (Selecione todos)", opts: ["Psicólogo", "Fonoaudiólogo", "Neurologista", "Psicopedagogo", "Outro", "Nenhum"], multi: true }, { key: 'med', m: "Faz uso de medicação? Se sim, qual? (Se não, responda 'Não')" }, { key: 'adic', m: "Há algo mais que considera importante relatar?" } ];
+        function addBubble(text, type) { const b = document.createElement('div'); b.className = `bubble ${type}`; b.textContent = text; container.insertBefore(b, typing); container.scrollTop = container.scrollHeight; }
+        function showStep() { if (!flow[currentStep]) return finish(); const s = flow[currentStep]; typing.style.display = "block"; setTimeout(() => { typing.style.display = "none"; addBubble(s.m, "ari"); if (s.opts) { inputSection.classList.add('hidden'); const grid = document.createElement('div'); grid.className = "options-grid"; tempMultiSelections = []; s.opts.forEach(o => { const btn = document.createElement('button'); btn.className = "btn-opt"; btn.textContent = o; if (s.multi) { btn.addEventListener('click', function() { this.classList.toggle('selected'); if(this.classList.contains('selected')) { tempMultiSelections.push(o); } else { tempMultiSelections = tempMultiSelections.filter(item => item !== o); } }); } else { btn.addEventListener('click', () => handleAnswer(o)); } grid.appendChild(btn); }); if (s.multi) { const confirmBtn = document.createElement('button'); confirmBtn.className = "btn-confirm"; confirmBtn.textContent = "Confirmar Escolhas"; confirmBtn.addEventListener('click', () => { const val = tempMultiSelections.length > 0 ? tempMultiSelections.join(", ") : "Nenhuma opção selecionada"; handleAnswer(val); }); grid.appendChild(confirmBtn); } container.insertBefore(grid, typing); } else { inputSection.classList.remove('hidden'); input.focus(); } container.scrollTop = container.scrollHeight; }, 800); }
+        function handleAnswer(val) { addBubble(val, "user"); const fullQuestionText = flow[currentStep].m; responses[fullQuestionText] = val; if (flow[currentStep].key === "lgpd" && val === "Não autorizo") { addBubble("Infelizmente não podemos prosseguir sem o consentimento.", "ari"); inputSection.classList.add('hidden'); const redo = document.createElement('button'); redo.className = "btn-confirm"; redo.textContent = "↻ Refazer Teste"; redo.addEventListener('click', restartAnamnese); container.insertBefore(redo, typing); return; } currentStep++; const grids = document.querySelectorAll('.options-grid'); grids.forEach(g => g.remove()); showStep(); }
+        function handleSend() { if (input.value.trim()) { const v = input.value; input.value = ""; handleAnswer(v); } }
+        function finish() { inputSection.classList.add('hidden'); addBubble("A processar os dados...", "ari"); responses["14. DATA E HORA DO PREENCHIMENTO"] = new Date().toLocaleString("pt-BR"); fetch(CONFIG.FORMSPREE_URL, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(responses) }).then(response => { if (response.ok) { container.classList.add('hidden'); successScreen.classList.remove('hidden'); } else { addBubble("Erro no envio. Tente novamente.", "ari"); inputSection.classList.remove('hidden'); } }).catch(() => addBubble("Erro de ligação. Verifique a sua internet.", "ari")); }
+        function restartAnamnese() { responses = {}; currentStep = 0; const bubbles = container.querySelectorAll('.bubble, .options-grid, .btn-confirm'); bubbles.forEach(b => b.remove()); successScreen.classList.add('hidden'); container.classList.remove('hidden'); showStep(); }
+        document.getElementById('btn-send').addEventListener('click', handleSend); document.getElementById('btn-whatsapp').addEventListener('click', () => { window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}`); }); document.getElementById('btn-redo').addEventListener('click', restartAnamnese); input.addEventListener("keypress", (e) => { if(e.key === "Enter") handleSend(); }); showStep();
+    })();
+</script>
+
+</body>
+</html>
