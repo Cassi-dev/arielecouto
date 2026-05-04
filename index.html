@@ -88,7 +88,7 @@
 <body>
 
 <header>
-    <img src="logoari.png" alt="Ariele Couto Neuropsicopedagogia" class="logo-ari" onerror="this.style.display='none';">
+    <img src="logoari.png" alt="[ERRO: Verifique no GitHub se o nome da imagem é logoari.jpeg, logoari.jpg ou logoari.png]" class="logo-ari">
     <h1>Ariele Couto</h1>
     <p>NEUROPSICOPEDAGOGA - CBO: 2394-35</p>
 </header>
@@ -180,12 +180,15 @@
             { key: 'adic', m: "Há algo mais que considera importante relatar?" } 
         ];
         
-        // === INTELIGÊNCIA DUPLA PARA O BUG DO TECLADO ===
+        // === INTELIGÊNCIA TRIPLA PARA VENCER O TECLADO ===
         function scrollToBottom() { 
-            // 1ª tentativa rápida
-            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 50); 
-            // 2ª tentativa após o teclado terminar de abrir no celular
-            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 350);
+            const forceScroll = () => {
+                container.scrollTop = container.scrollHeight;
+                inputSection.scrollIntoView({ behavior: "smooth", block: "end" });
+            };
+            setTimeout(forceScroll, 50);   // Antes do teclado
+            setTimeout(forceScroll, 350);  // Durante o teclado
+            setTimeout(forceScroll, 800);  // Para garantir se o celular for lento
         }
 
         function addBubble(text, type) { 
@@ -379,7 +382,6 @@
             if(e.key === "Enter") handleSend(); 
         }); 
         
-        // Dispara sempre que o ecrã redimensionar (quando o teclado abrir em Androids/iOS)
         window.addEventListener('resize', scrollToBottom);
         input.addEventListener("focus", scrollToBottom);
         input.addEventListener("click", scrollToBottom);
