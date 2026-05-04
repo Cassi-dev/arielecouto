@@ -8,7 +8,6 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data: https:;">
 
     <style>
-        /* === DESIGN PREMIUM & CORREÇÕES MOBILE === */
         :root {
             --ari-accent: #6B46C1; 
             --user-accent: #805AD5; 
@@ -130,7 +129,6 @@
         let currentStep = 0; 
         let tempMultiSelections = [];
         
-        // FLUXO DE PERGUNTAS COM VALIDADORES (valType)
         const flow = [ 
             { key: 'lgpd', m: "Você autoriza o tratamento destes dados para fins de triagem clínica, conforme LGPD?", opts: ["Sim, autorizo", "Não autorizo"] }, 
             { key: 'email', m: "Qual o seu melhor e-mail? (Para segurança caso precise refazer o teste)", valType: 'email' }, 
@@ -182,7 +180,13 @@
             { key: 'adic', m: "Há algo mais que considera importante relatar?" } 
         ];
         
-        function scrollToBottom() { setTimeout(() => { container.scrollTop = container.scrollHeight; }, 50); }
+        // === INTELIGÊNCIA DUPLA PARA O BUG DO TECLADO ===
+        function scrollToBottom() { 
+            // 1ª tentativa rápida
+            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 50); 
+            // 2ª tentativa após o teclado terminar de abrir no celular
+            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 350);
+        }
 
         function addBubble(text, type) { 
             const b = document.createElement('div'); 
@@ -192,7 +196,6 @@
             scrollToBottom(); 
         }
 
-        // LÓGICA DO VERIFICADOR (VALIDAÇÃO)
         function validateInput(val, type) {
             if (!val || !val.trim()) return "Por favor, digite uma resposta para continuarmos.";
             
@@ -218,19 +221,16 @@
                     return "Data impossível. Verifique os números e tente novamente.";
                 }
             }
-            return null; // Passou em tudo
+            return null;
         }
 
-        // CALCULADORA DE IDADE AUTOMÁTICA
         function calculateAge(dateStr) {
             const parts = dateStr.split('/');
             const birthDate = new Date(parts[2], parts[1] - 1, parts[0]);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
             return age;
         }
         
@@ -292,18 +292,16 @@
         function handleAnswer(val) { 
             const currentStepData = flow[currentStep];
 
-            // 1. CHAMA O VERIFICADOR DE DADOS
             if (currentStepData.valType) {
                 const errorMsg = validateInput(val, currentStepData.valType);
                 if (errorMsg) {
                     addBubble(errorMsg, "ari error-bubble");
-                    // Se for campo de digitar, devolve o foco pro teclado
                     if (!currentStepData.opts) {
                         inputSection.classList.remove('hidden');
                         input.focus();
                     }
                     scrollToBottom();
-                    return; // Bloqueia o avanço da etapa
+                    return; 
                 }
             }
 
@@ -311,7 +309,6 @@
             const fullQuestionText = currentStepData.m; 
             responses[fullQuestionText] = val; 
 
-            // 2. CALCULA A IDADE E SALVA NO SEU E-MAIL
             if (currentStepData.valType === 'date') {
                 const age = calculateAge(val);
                 responses["IDADE CALCULADA PELO SISTEMA"] = age + " anos";
@@ -382,12 +379,15 @@
             if(e.key === "Enter") handleSend(); 
         }); 
         
+        // Dispara sempre que o ecrã redimensionar (quando o teclado abrir em Androids/iOS)
+        window.addEventListener('resize', scrollToBottom);
         input.addEventListener("focus", scrollToBottom);
+        input.addEventListener("click", scrollToBottom);
         
         showStep();
         
     })();
 </script>
-  
+
 </body>
 </html>
